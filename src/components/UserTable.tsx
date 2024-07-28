@@ -50,7 +50,7 @@ const UserTable: React.FC<Props> = ({
 							backgroundColor:
 								highlightOldest &&
 								oldestUsers[user.address.city]?.id === user.id
-									? 'yellow'
+									? '#F9F7EC'
 									: 'inherit',
 						}}
 					>
@@ -62,6 +62,13 @@ const UserTable: React.FC<Props> = ({
 						</TableCell>
 					</TableRow>
 				))}
+				<TableRow>
+					<TableCell colSpan={4} align="center">
+						<strong>
+							Total Number of Customers Found: {users.length}
+						</strong>
+					</TableCell>
+				</TableRow>
 			</TableBody>
 		</Table>
 	</TableContainer>

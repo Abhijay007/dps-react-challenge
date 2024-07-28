@@ -9,7 +9,10 @@ import {
 	Checkbox,
 	Grid,
 	Box,
+	InputAdornment,
+	IconButton,
 } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface Props {
 	searchName: string;
@@ -19,6 +22,7 @@ interface Props {
 	onNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	onCityChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 	onHighlightChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onClearSearch: () => void;
 }
 
 const FiltersHeader: React.FC<Props> = ({
@@ -29,6 +33,7 @@ const FiltersHeader: React.FC<Props> = ({
 	onNameChange,
 	onCityChange,
 	onHighlightChange,
+	onClearSearch,
 }) => (
 	<Box
 		sx={{
@@ -44,6 +49,21 @@ const FiltersHeader: React.FC<Props> = ({
 					value={searchName}
 					onChange={onNameChange}
 					fullWidth
+					placeholder="Search..."
+					InputProps={{
+						endAdornment: searchName && (
+							<InputAdornment position="end">
+								<IconButton onClick={onClearSearch} edge="end">
+									<ClearIcon />
+								</IconButton>
+							</InputAdornment>
+						),
+					}}
+					sx={{
+						'& .MuiInputBase-root': {
+							padding: '14px 14px',
+						},
+					}}
 				/>
 			</Grid>
 
@@ -55,6 +75,11 @@ const FiltersHeader: React.FC<Props> = ({
 						value={selectedCity}
 						onChange={onCityChange}
 						label="Select city"
+						sx={{
+							'& .MuiSelect-select': {
+								padding: '14px 14px',
+							},
+						}}
 					>
 						<MenuItem value="">
 							<em>Select city</em>

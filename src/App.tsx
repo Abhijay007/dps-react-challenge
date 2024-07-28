@@ -26,6 +26,10 @@ const App: React.FC = () => {
 		setHighlightOldest(e.target.checked);
 	};
 
+	const handleClearSearch = () => {
+		setSearchName('');
+	};
+
 	const filteredUsers = useMemo(() => {
 		return users.filter((user) => {
 			const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
@@ -78,6 +82,7 @@ const App: React.FC = () => {
 					onNameChange={handleNameChange}
 					onCityChange={handleCityChange}
 					onHighlightChange={handleHighlightChange}
+					onClearSearch={handleClearSearch}
 				/>
 				<UserTable
 					users={filteredUsers}
