@@ -4,12 +4,15 @@ import FiltersHeader from './components/FiltersHeader';
 import UserTable from './components/UserTable';
 import dpsLogo from './assets/DPS.svg';
 import './App.css';
+import useDebounce from './hooks/useDebounce';
 
 const App: React.FC = () => {
 	const users = useUsers();
 	const [searchName, setSearchName] = useState('');
 	const [selectedCity, setSelectedCity] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
+
+	const debouncedSearchName = useDebounce(searchName, 1000);
 
 	const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchName(e.target.value);
@@ -26,13 +29,15 @@ const App: React.FC = () => {
 	const filteredUsers = useMemo(() => {
 		return users.filter((user) => {
 			const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-			const isNameMatch = fullName.includes(searchName.toLowerCase());
+			const isNameMatch = fullName.includes(
+				debouncedSearchName.toLowerCase(),
+			);
 			const isCityMatch = selectedCity
 				? user.address.city === selectedCity
 				: true;
 			return isNameMatch && isCityMatch;
 		});
-	}, [users, searchName, selectedCity]);
+	}, [users, debouncedSearchName, selectedCity]);
 
 	const cities = useMemo(() => {
 		const citySet = new Set(users.map((user) => user.address.city));
@@ -58,7 +63,11 @@ const App: React.FC = () => {
 	return (
 		<>
 			<div className="container">
-				<a href="https://www.digitalproductschool.io/" target="_blank">
+				<a
+					href="https://www.digitalproductschool.io/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					<img src={dpsLogo} className="logo" alt="DPS logo" />
 				</a>
 				<FiltersHeader
