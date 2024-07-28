@@ -36,65 +36,6 @@
 	}
 }
 
-.table-container {
-	padding: 16px;
-}
-
-table {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-th,
-td {
-	padding: 15px 40px;
-	border: 1px solid #000000;
-	color: black;
-}
-
-.table-row-highlighted {
-	background-color: yellow;
-}
-
-.table-cell {
-	padding: 15px 40px;
-}
-
-.filters-container {
-	display: flex;
-	gap: 16px;
-	margin-bottom: 16px;
-}
-
-.text-field,
-.select-field {
-	flex: 1;
-	border-radius: 8px;
-	border: 1px solid #646cff;
-	padding: 12px 20px;
-	margin: 8px 0;
-	background-color: #ffffff;
-	color: #000000;
-}
-
-.text-field:focus,
-.select-field:focus {
-	outline: none;
-}
-
-.form-control {
-	flex: 1;
-}
-
-.checkbox-label {
-	display: flex;
-	align-items: center;
-}
-
-.checkbox-label input {
-	margin-right: 8px;
-}
-
 label {
 	color: black;
 }

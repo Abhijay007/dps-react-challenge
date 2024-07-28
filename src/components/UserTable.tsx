@@ -1,5 +1,14 @@
 import React from 'react';
 import { User } from '../models/user';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+} from '@mui/material';
 
 interface Props {
 	users: User[];
@@ -11,43 +20,51 @@ const UserTable: React.FC<Props> = ({
 	users,
 	highlightOldest,
 	oldestUsers,
-}) => {
-	return (
-		<div className="table-container">
-			<table>
-				<thead>
-					<tr>
-						<th className="table-cell">ID</th>
-						<th className="table-cell">Name</th>
-						<th className="table-cell">City</th>
-						<th className="table-cell">Birthday</th>
-					</tr>
-				</thead>
-				<tbody>
-					{users.map((user) => (
-						<tr
-							key={user.id}
-							style={{
-								backgroundColor:
-									highlightOldest &&
-									oldestUsers[user.address.city]?.id ===
-										user.id
-										? 'yellow'
-										: 'inherit',
-							}}
-						>
-							<td className="table-cell">{user.id}</td>
-							<td className="table-cell">{`${user.firstName} ${user.lastName}`}</td>
-							<td className="table-cell">{user.address.city}</td>
-							<td className="table-cell">
-								{new Date(user.birthDate).toLocaleDateString()}
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
-};
+}) => (
+	<TableContainer component={Paper}>
+		<Table
+			sx={{
+				'& td, & th': {
+					padding: '10px 60px',
+				},
+				'& tr': {
+					'&:last-of-type': {
+						borderBottom: 'none',
+					},
+				},
+			}}
+		>
+			<TableHead>
+				<TableRow>
+					<TableCell>ID</TableCell>
+					<TableCell>Name</TableCell>
+					<TableCell>City</TableCell>
+					<TableCell>Birthday</TableCell>
+				</TableRow>
+			</TableHead>
+			<TableBody>
+				{users.map((user) => (
+					<TableRow
+						key={user.id}
+						sx={{
+							backgroundColor:
+								highlightOldest &&
+								oldestUsers[user.address.city]?.id === user.id
+									? 'yellow'
+									: 'inherit',
+						}}
+					>
+						<TableCell>{user.id}</TableCell>
+						<TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
+						<TableCell>{user.address.city}</TableCell>
+						<TableCell>
+							{new Date(user.birthDate).toLocaleDateString()}
+						</TableCell>
+					</TableRow>
+				))}
+			</TableBody>
+		</Table>
+	</TableContainer>
+);
 
 export default UserTable;

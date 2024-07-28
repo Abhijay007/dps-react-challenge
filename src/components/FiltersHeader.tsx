@@ -1,4 +1,15 @@
 import React from 'react';
+import {
+	TextField,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	FormControlLabel,
+	Checkbox,
+	Grid,
+	Box,
+} from '@mui/material';
 
 interface Props {
 	searchName: string;
@@ -19,39 +30,57 @@ const FiltersHeader: React.FC<Props> = ({
 	onCityChange,
 	onHighlightChange,
 }) => (
-	<div className="filters-container">
-		<input
-			type="text"
-			placeholder="Search by name"
-			value={searchName}
-			onChange={onNameChange}
-			className="text-field"
-		/>
-		<div className="form-control">
-			<label htmlFor="city-select">Select city</label>
-			<select
-				id="city-select"
-				value={selectedCity}
-				onChange={onCityChange}
-				className="select-field"
-			>
-				<option value="">Select city</option>
-				{cities.map((city) => (
-					<option key={city} value={city}>
-						{city}
-					</option>
-				))}
-			</select>
-		</div>
-		<label className="checkbox-label">
-			<input
-				type="checkbox"
-				checked={highlightOldest}
-				onChange={onHighlightChange}
-			/>
-			oldest per city
-		</label>
-	</div>
+	<Box
+		sx={{
+			p: 2,
+			width: '100%',
+		}}
+	>
+		<Grid container spacing={2} alignItems="center">
+			<Grid item xs={12} sm={4}>
+				<TextField
+					label="Search by name"
+					variant="outlined"
+					value={searchName}
+					onChange={onNameChange}
+					fullWidth
+				/>
+			</Grid>
+
+			<Grid item xs={12} sm={4}>
+				<FormControl fullWidth variant="outlined">
+					<InputLabel id="city-select-label">Select city</InputLabel>
+					<Select
+						labelId="city-select-label"
+						value={selectedCity}
+						onChange={onCityChange}
+						label="Select city"
+					>
+						<MenuItem value="">
+							<em>Select city</em>
+						</MenuItem>
+						{cities.map((city) => (
+							<MenuItem key={city} value={city}>
+								{city}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+			</Grid>
+
+			<Grid item xs={12} sm={4}>
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={highlightOldest}
+							onChange={onHighlightChange}
+						/>
+					}
+					label="Oldest per city"
+				/>
+			</Grid>
+		</Grid>
+	</Box>
 );
 
 export default FiltersHeader;
