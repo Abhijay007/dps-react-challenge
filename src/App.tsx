@@ -7,7 +7,7 @@ import './App.css';
 import useDebounce from './hooks/useDebounce';
 
 const App: React.FC = () => {
-	const users = useUsers();
+	const { users, isLoading } = useUsers();
 	const [searchName, setSearchName] = useState('');
 	const [selectedCity, setSelectedCity] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
@@ -31,6 +31,7 @@ const App: React.FC = () => {
 	};
 
 	const filteredUsers = useMemo(() => {
+		if (isLoading) return [];
 		return users.filter((user) => {
 			const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
 			const isNameMatch = fullName.includes(
@@ -41,14 +42,16 @@ const App: React.FC = () => {
 				: true;
 			return isNameMatch && isCityMatch;
 		});
-	}, [users, debouncedSearchName, selectedCity]);
+	}, [users, debouncedSearchName, selectedCity, isLoading]);
 
 	const cities = useMemo(() => {
+		if (isLoading) return [];
 		const citySet = new Set(users.map((user) => user.address.city));
 		return Array.from(citySet);
-	}, [users]);
+	}, [users, isLoading]);
 
 	const oldestUsers = useMemo(() => {
+		if (isLoading) return {};
 		return filteredUsers.reduce(
 			(acc, user) => {
 				const city = user.address.city;
@@ -62,7 +65,7 @@ const App: React.FC = () => {
 			},
 			{} as Record<string, User | undefined>,
 		);
-	}, [filteredUsers]);
+	}, [filteredUsers, isLoading]);
 
 	return (
 		<>
@@ -88,6 +91,7 @@ const App: React.FC = () => {
 					users={filteredUsers}
 					highlightOldest={highlightOldest}
 					oldestUsers={oldestUsers}
+					isLoading={isLoading}
 				/>
 			</div>
 		</>

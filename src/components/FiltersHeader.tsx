@@ -60,7 +60,7 @@ const FiltersHeader: React.FC<Props> = ({
 						),
 					}}
 					sx={{
-						'& .MuiInputBase-root': {
+						'& .MuiInputBase-input': {
 							padding: '14px 14px',
 						},
 					}}

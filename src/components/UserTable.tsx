@@ -8,22 +8,27 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
+	Skeleton,
 } from '@mui/material';
 
 interface Props {
 	users: User[];
 	highlightOldest: boolean;
 	oldestUsers: Record<string, User | undefined>;
+	isLoading: boolean;
 }
 
 const UserTable: React.FC<Props> = ({
 	users,
 	highlightOldest,
 	oldestUsers,
+	isLoading,
 }) => (
-	<TableContainer component={Paper}>
+	<TableContainer component={Paper} sx={{ width: '100%' }}>
 		<Table
 			sx={{
+				width: 800,
+				tableLayout: 'fixed',
 				'& td, & th': {
 					padding: '10px 50px',
 				},
@@ -36,39 +41,82 @@ const UserTable: React.FC<Props> = ({
 		>
 			<TableHead>
 				<TableRow>
-					<TableCell>ID</TableCell>
-					<TableCell>Name</TableCell>
-					<TableCell>City</TableCell>
-					<TableCell>Birthday</TableCell>
+					{isLoading ? (
+						<>
+							<TableCell sx={{ width: '10%' }}>
+								<Skeleton variant="text" />
+							</TableCell>
+							<TableCell sx={{ width: '40%' }}>
+								<Skeleton variant="text" />
+							</TableCell>
+							<TableCell sx={{ width: '25%' }}>
+								<Skeleton variant="text" />
+							</TableCell>
+							<TableCell sx={{ width: '25%' }}>
+								<Skeleton variant="text" />
+							</TableCell>
+						</>
+					) : (
+						<>
+							<TableCell sx={{ width: '10%' }}>ID</TableCell>
+							<TableCell sx={{ width: '40%' }}>Name</TableCell>
+							<TableCell sx={{ width: '25%' }}>City</TableCell>
+							<TableCell sx={{ width: '25%' }}>
+								Birthday
+							</TableCell>
+						</>
+					)}
 				</TableRow>
 			</TableHead>
 			<TableBody>
-				{users.map((user) => (
-					<TableRow
-						key={user.id}
-						sx={{
-							backgroundColor:
-								highlightOldest &&
-								oldestUsers[user.address.city]?.id === user.id
-									? '#F9F7EC'
-									: 'inherit',
-						}}
-					>
-						<TableCell>{user.id}</TableCell>
-						<TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
-						<TableCell>{user.address.city}</TableCell>
-						<TableCell>
-							{new Date(user.birthDate).toLocaleDateString()}
+				{isLoading
+					? Array.from({ length: 5 }).map((_, index) => (
+							<TableRow key={index}>
+								<TableCell>
+									<Skeleton variant="text" />
+								</TableCell>
+								<TableCell>
+									<Skeleton variant="text" />
+								</TableCell>
+								<TableCell>
+									<Skeleton variant="text" />
+								</TableCell>
+								<TableCell>
+									<Skeleton variant="text" />
+								</TableCell>
+							</TableRow>
+						))
+					: users.map((user) => (
+							<TableRow
+								key={user.id}
+								sx={{
+									backgroundColor:
+										highlightOldest &&
+										oldestUsers[user.address.city]?.id ===
+											user.id
+											? '#F9F7EC'
+											: 'inherit',
+								}}
+							>
+								<TableCell>{user.id}</TableCell>
+								<TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
+								<TableCell>{user.address.city}</TableCell>
+								<TableCell>
+									{new Date(
+										user.birthDate,
+									).toLocaleDateString()}
+								</TableCell>
+							</TableRow>
+						))}
+				{!isLoading && (
+					<TableRow>
+						<TableCell colSpan={4} align="center">
+							<strong>
+								Total Number of Customers Found: {users.length}
+							</strong>
 						</TableCell>
 					</TableRow>
-				))}
-				<TableRow>
-					<TableCell colSpan={4} align="center">
-						<strong>
-							Total Number of Customers Found: {users.length}
-						</strong>
-					</TableCell>
-				</TableRow>
+				)}
 			</TableBody>
 		</Table>
 	</TableContainer>
