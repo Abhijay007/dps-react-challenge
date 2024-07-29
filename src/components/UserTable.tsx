@@ -29,8 +29,13 @@ const UserTable: React.FC<Props> = ({
 			sx={{
 				width: 800,
 				tableLayout: 'fixed',
-				'& td, & th': {
-					padding: '10px 50px',
+				'& td': {
+					padding: '12px 50px',
+				},
+				'& th': {
+					fontWeight: 'bold',
+					color: '#737373',
+					padding: '8px 50px',
 				},
 				'& tr': {
 					'&:last-of-type': {
