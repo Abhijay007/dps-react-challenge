@@ -11,6 +11,7 @@ import {
 	Box,
 	InputAdornment,
 	IconButton,
+	SelectChangeEvent,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -20,7 +21,10 @@ interface Props {
 	highlightOldest: boolean;
 	cities: string[];
 	onNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	onCityChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+	onCityChange: (
+		event: SelectChangeEvent<string>,
+		child: React.ReactNode,
+	) => void;
 	onHighlightChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	onClearSearch: () => void;
 }
@@ -73,7 +77,12 @@ const FiltersHeader: React.FC<Props> = ({
 					<Select
 						labelId="city-select-label"
 						value={selectedCity}
-						onChange={onCityChange}
+						onChange={(event, child) =>
+							onCityChange(
+								event as SelectChangeEvent<string>,
+								child,
+							)
+						}
 						label="Select city"
 						sx={{
 							'& .MuiSelect-select': {

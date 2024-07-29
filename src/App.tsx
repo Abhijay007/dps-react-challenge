@@ -4,7 +4,9 @@ import FiltersHeader from './components/FiltersHeader';
 import UserTable from './components/UserTable';
 import dpsLogo from './assets/DPS.svg';
 import './App.css';
+import { User } from './models/user';
 import useDebounce from './hooks/useDebounce';
+import { SelectChangeEvent } from '@mui/material';
 
 const App: React.FC = () => {
 	const { users, isLoading } = useUsers();
@@ -18,7 +20,7 @@ const App: React.FC = () => {
 		setSearchName(e.target.value);
 	};
 
-	const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+	const handleCityChange = (e: SelectChangeEvent<string>) => {
 		setSelectedCity(e.target.value);
 	};
 
@@ -57,7 +59,7 @@ const App: React.FC = () => {
 				const city = user.address.city;
 				if (
 					!acc[city] ||
-					new Date(acc[city].birthDate) > new Date(user.birthDate)
+					new Date(acc[city]!.birthDate) > new Date(user.birthDate)
 				) {
 					acc[city] = user;
 				}
@@ -68,33 +70,31 @@ const App: React.FC = () => {
 	}, [filteredUsers, isLoading]);
 
 	return (
-		<>
-			<div className="container">
-				<a
-					href="https://www.digitalproductschool.io/"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<img src={dpsLogo} className="logo" alt="DPS logo" />
-				</a>
-				<FiltersHeader
-					searchName={searchName}
-					selectedCity={selectedCity}
-					highlightOldest={highlightOldest}
-					cities={cities}
-					onNameChange={handleNameChange}
-					onCityChange={handleCityChange}
-					onHighlightChange={handleHighlightChange}
-					onClearSearch={handleClearSearch}
-				/>
-				<UserTable
-					users={filteredUsers}
-					highlightOldest={highlightOldest}
-					oldestUsers={oldestUsers}
-					isLoading={isLoading}
-				/>
-			</div>
-		</>
+		<div className="container">
+			<a
+				href="https://www.digitalproductschool.io/"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<img src={dpsLogo} className="logo" alt="DPS logo" />
+			</a>
+			<FiltersHeader
+				searchName={searchName}
+				selectedCity={selectedCity}
+				highlightOldest={highlightOldest}
+				cities={cities}
+				onNameChange={handleNameChange}
+				onCityChange={handleCityChange}
+				onHighlightChange={handleHighlightChange}
+				onClearSearch={handleClearSearch}
+			/>
+			<UserTable
+				users={filteredUsers}
+				highlightOldest={highlightOldest}
+				oldestUsers={oldestUsers}
+				isLoading={isLoading}
+			/>
+		</div>
 	);
 };
 
